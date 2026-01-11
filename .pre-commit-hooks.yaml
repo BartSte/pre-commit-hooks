@@ -1,0 +1,8 @@
+- id: run-third-party-license-generator
+  stages: [pre-commit]
+  name: Run third-party license generator
+  entry: hooks/run_third_party_license_generator.py
+  language: system
+  pass_filenames: false
+  files: ^(uv\.lock|THIRDPARTYLICENSES|third_party_license_overrides\.yaml)$
+  description: Run the third_party_license_file_generator from https://pypi.org/project/third-party-license-file-generator/. Any arguments passed to the "args" field will be passed to the script.
