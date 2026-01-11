@@ -1,0 +1,55 @@
+[project]
+name = "pre-commit-hooks"
+version = "1.1.0"
+
+description = "A collection of pre-commit hooks"
+requires-python = ">=3.11"
+authors = [{ name = "BartSte" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+dependencies = []
+
+
+[dependency-groups]
+dev = ["pre-commit>=3.0.0", "pytest>=7.0.0", "ipdb", "ipython"]
+
+# Build system configuration
+
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests", "__pycache__"]
+
+# Linter, formatter, type checker, and test configurations from here on
+[tool.pyright]
+include = ["src/pygeneral", "tests"]
+exclude = ["**/__pycache__", ".git", ".pytest_cache", "extras"]
+ignore = []
+defineConstant = {}
+reportImplicitStringConcatenation = false
+reportMissingImports = true
+reportMissingTypeStubs = false
+reportUnusedCallResult = false
+pythonVersion = "3.10"
+
+[tool.ruff]
+line-length = 80
+select = [
+    "F", # pyflakes
+    "E", # pycodestyle errors
+
+    "W", # pycodestyle warnings
+    "I", # isort
+    "N", # PEP8 naming
+]
+
+[tool.pytest.ini_options]
+addopts = "-s -rA --log-level INFO"
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ipdb]
+context = 9
