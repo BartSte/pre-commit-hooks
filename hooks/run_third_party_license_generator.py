@@ -11,7 +11,6 @@ import subprocess
 import sys
 import tempfile
 from os import path
-from typing import Self
 
 
 def main() -> int:
@@ -94,7 +93,7 @@ class TempVenv:
         else:
             return path.join(venv_path, "bin", "python")
 
-    def __enter__(self) -> Self:
+    def __enter__(self) -> "TempVenv":
         """Create the virtual environment and install dependencies.
 
         Returns:
