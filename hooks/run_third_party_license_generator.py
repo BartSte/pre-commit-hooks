@@ -2,15 +2,13 @@
 
 """Third-Party License Generator.
 
-Script to run the third-party license generator in a temporary virtual
+Script to run the third-party license generator using the current Python
 environment.
 """
 
 import argparse
 import subprocess
 import sys
-import tempfile
-from os import path
 
 
 def main() -> int:
@@ -44,87 +42,24 @@ def run_generator(extra_args: list[str] | None = None) -> int:
         Exit status code from the generator invocation.
     """
     extra_args = extra_args or []
-    with TempVenv() as tmp_venv:
-        cmd: list[str] = [
-            tmp_venv.executable,
-            "-m",
-            "third_party_license_file_generator",
-            "--requirements-path",
-            "pyproject.toml",
-            "--python-path",
-            sys.executable,
-            "--skip-prefix",
-            "fc",
-            "--skip-prefix",
-            "fr",
-            "--skip-prefix",
-            "FR",
-            "--do-not-skip-not-required-packages",
-        ]
-        cmd.extend(extra_args)
-        return subprocess.check_call(cmd)
-
-
-class TempVenv:
-    """Context manager that creates and tears down a temporary virtual
-    environment."""
-
-    _temp_dir: tempfile.TemporaryDirectory[str]
-    venv: str
-    executable: str
-
-    def __init__(self):
-        """Initialize the temporary virtual environment manager."""
-        self._temp_dir = tempfile.TemporaryDirectory()
-        self.venv = path.join(self._temp_dir.name, ".venv")
-        self.executable = self._get_executable_path(self.venv)
-
-    def _get_executable_path(self, venv_path: str) -> str:
-        """Compute the Python executable path for the virtual environment.
-
-        Args:
-            venv_path: Path to the root of the virtual environment.
-
-        Returns:
-            Absolute path to the Python executable within the virtual environment.
-        """
-        if sys.platform == "win32":
-            return path.join(venv_path, "Scripts", "python.exe")
-        else:
-            return path.join(venv_path, "bin", "python")
-
-    def __enter__(self) -> "TempVenv":
-        """Create the virtual environment and install dependencies.
-
-        Returns:
-            Self: Temporary virtual environment context manager.
-        """
-        _ = subprocess.check_call(["python", "-m", "venv", self.venv])
-        _ = subprocess.check_call(
-            [
-                self.executable,
-                "-m",
-                "pip",
-                "install",
-                "third-party-license-file-generator",
-            ]
-        )
-        return self
-
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_value: BaseException | None,
-        traceback: object | None,
-    ) -> None:
-        """Clean up the temporary directory when leaving the context.
-
-        Args:
-            exc_type: Exception type raised within the context, if any.
-            exc_value: Exception instance raised within the context, if any.
-            traceback: Traceback associated with the raised exception, if any.
-        """
-        self._temp_dir.cleanup()
+    cmd: list[str] = [
+        sys.executable,
+        "-m",
+        "third_party_license_file_generator",
+        "--requirements-path",
+        "pyproject.toml",
+        "--python-path",
+        sys.executable,
+        "--skip-prefix",
+        "fc",
+        "--skip-prefix",
+        "fr",
+        "--skip-prefix",
+        "FR",
+        "--do-not-skip-not-required-packages",
+    ]
+    cmd.extend(extra_args)
+    return subprocess.check_call(cmd)
 
 
 def parse_output_file() -> str:
