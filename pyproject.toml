@@ -1,5 +1,5 @@
 [project]
-name = "pre-commit-hooks"
+name = "hooks"
 version = "1.1.0"
 
 description = "A collection of pre-commit hooks"
@@ -9,9 +9,17 @@ readme = "README.md"
 license = { file = "LICENSE" }
 dependencies = []
 
-
 [dependency-groups]
-dev = ["pre-commit>=3.0.0", "pytest>=7.0.0", "ipdb", "ipython"]
+dev = [
+    "ipdb",
+    "ipython",
+    "pre-commit>=3.0.0",
+    "pytest>=7.0.0",
+    "third-party-license-file-generator",
+]
+
+[project.scripts]
+run_third_party_license_generator = "hooks.run_third_party_license_generator:main"
 
 # Build system configuration
 
@@ -40,7 +48,6 @@ line-length = 80
 select = [
     "F", # pyflakes
     "E", # pycodestyle errors
-
     "W", # pycodestyle warnings
     "I", # isort
     "N", # PEP8 naming

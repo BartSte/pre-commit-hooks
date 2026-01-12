@@ -73,7 +73,7 @@ def parse_output_file() -> str:
     parser = argparse.ArgumentParser()
     _ = parser.add_argument("-o", "--output-file")
     args, _ = parser.parse_known_args()
-    return getattr(args, "output_file", "THIRDPARTYLICENSES")
+    return args.output_file if args.output_file else "THIRDPARTYLICENSES"
 
 
 def remove_head_tail(file_path: str) -> None:

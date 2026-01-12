@@ -1,7 +1,7 @@
 - id: run-third-party-license-generator
   stages: [pre-commit]
   name: Run third-party license generator
-  entry: hooks/run_third_party_license_generator.py
+  entry: run_third_party_license_generator
   language: python
   pass_filenames: false
   files: ^(uv\.lock|THIRDPARTYLICENSES|third_party_license_overrides\.yaml)$
